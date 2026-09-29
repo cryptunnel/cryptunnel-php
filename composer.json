@@ -1,0 +1,44 @@
+{
+    "name": "cryptunnel/cryptunnel",
+    "description": "PHP SDK for Cryptunnel - accept crypto payments straight to your own wallets",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "cryptunnel",
+        "crypto",
+        "payments",
+        "usdt",
+        "tron",
+        "ethereum",
+        "woocommerce"
+    ],
+    "homepage": "https://cryptunnel.io",
+    "support": {
+        "issues": "https://github.com/cryptunnel/cryptunnel-php/issues",
+        "docs": "https://docs.cryptunnel.io"
+    },
+    "require": {
+        "php": "^8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cryptunnel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cryptunnel\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1.0"
+        }
+    }
+}
