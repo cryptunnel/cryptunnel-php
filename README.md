@@ -1,5 +1,7 @@
 # cryptunnel
 
+[![Test](https://github.com/cryptunnel/cryptunnel-php/actions/workflows/test.yml/badge.svg)](https://github.com/cryptunnel/cryptunnel-php/actions/workflows/test.yml) [![Packagist](https://img.shields.io/packagist/v/cryptunnel/cryptunnel)](https://packagist.org/packages/cryptunnel/cryptunnel) [![PHP](https://img.shields.io/packagist/dependency-v/cryptunnel/cryptunnel/php)](https://packagist.org/packages/cryptunnel/cryptunnel) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 PHP SDK for [Cryptunnel](https://cryptunnel.io) - accept crypto payments straight into your own
 wallets. No Composer dependencies: `ext-curl` and `ext-json`, which every PHP build ships.
 
