@@ -131,6 +131,20 @@ final class ClientTest extends TestCase
         }
     }
 
+    public function testTheUserAgentNamesThePackageRuntimeAndPlatform(): void
+    {
+        $client = new Cryptunnel('merchant-id', 'ct_live_key');
+
+        self::assertMatchesRegularExpression('#^cryptunnel-php/\S+ php/\S+ curl/\S+ \(\S+ \S+\)$#', $client->userAgent());
+    }
+
+    public function testTheAppNameIsAppendedToTheUserAgent(): void
+    {
+        $client = new Cryptunnel('merchant-id', 'ct_live_key', app: 'my-shop/2.0');
+
+        self::assertStringEndsWith(' my-shop/2.0', $client->userAgent());
+    }
+
     public function testBaseUrlIsHonoured(): void
     {
         $client = new StubClient(200, [], baseUrl: 'http://localhost:3000/');

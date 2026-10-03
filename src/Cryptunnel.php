@@ -32,6 +32,7 @@ class Cryptunnel
     /**
      * @param bool $sandbox Mark every created payment as a test payment and list the testnet currencies
      * @param int $timeout Seconds before a request is abandoned
+     * @param string|null $app Your application, appended to the User-Agent, e.g. "my-shop/2.0"
      */
     public function __construct(
         private readonly string $merchantId,
@@ -39,8 +40,43 @@ class Cryptunnel
         public readonly bool $sandbox = false,
         string $baseUrl = self::DEFAULT_BASE_URL,
         private readonly int $timeout = self::DEFAULT_TIMEOUT,
+        private readonly ?string $app = null,
     ) {
         $this->baseUrl = rtrim($baseUrl, '/');
+    }
+
+    /**
+     * The User-Agent every request carries: package, PHP, curl and the platform, plus your $app if
+     * given. Cryptunnel uses it to see which SDK versions merchants integrate with. Nothing identifying
+     * is included - no hostname, no paths.
+     */
+    public function userAgent(): string
+    {
+        $base = sprintf(
+            'cryptunnel-php/%s php/%s curl/%s (%s %s)',
+            self::version(),
+            PHP_VERSION,
+            curl_version()['version'] ?? 'unknown',
+            PHP_OS_FAMILY,
+            php_uname('m'),
+        );
+
+        return $this->app === null ? $base : "$base {$this->app}";
+    }
+
+    private static function version(): string
+    {
+        try {
+            $version = \Composer\InstalledVersions::getPrettyVersion('cryptunnel/cryptunnel');
+            // Inside this repository Composer reports the root package as "1.0.0+no-version-set"
+            if ($version === null || str_contains($version, 'no-version-set')) {
+                return 'dev';
+            }
+
+            return ltrim($version, 'v');
+        } catch (\Throwable) {
+            return 'dev';
+        }
     }
 
     /**
@@ -223,6 +259,7 @@ class Cryptunnel
             CURLOPT_TIMEOUT => $this->timeout,
             CURLOPT_HTTPHEADER => [
                 'content-type: application/json',
+                'user-agent: ' . $this->userAgent(),
                 'x-merchant-id: ' . $this->merchantId,
                 'x-api-key: ' . $this->apiKey,
             ],
